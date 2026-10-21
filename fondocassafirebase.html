@@ -117,12 +117,6 @@
         appId: "1:589025376495:web:9aecc26075cf285eec831a"
     };
 
-    // Inizializza Firebase
-    firebase.initializeApp(firebaseConfig);
-    const db = firebase.database();
-    const dbRef = db.ref('cassa_classe_dati');
-    const connectedRef = db.ref('.info/connected');
-
     // ==========================================
     // DATI DI DEFAULT (Funzione generatrice pulita)
     // ==========================================
@@ -153,6 +147,8 @@
 
     let isFirstLoad = true;
     let alertTimeout = null;
+    let db = null;
+    let dbRef = null;
 
     // ==========================================
     // UTILITY DI SICUREZZA E NORMALIZZAZIONE FIREBASE
@@ -206,53 +202,73 @@
     }
 
     // ==========================================
-    // MOTORE CLOUD: STATO RETE, LETTURA E SCRITTURA
+    // RENDER GRAFICO IMMEDIATO E MOTORE CLOUD
     // ==========================================
 
-    connectedRef.on('value', (snap) => {
-        const indicatore = document.getElementById('sync-indicator');
-        if (snap.val() === true) {
+    // Disegna subito l'interfaccia all'avvio anche prima che Firebase risponda
+    renderTutto();
+
+    try {
+        firebase.initializeApp(firebaseConfig);
+        db = firebase.database();
+        dbRef = db.ref('cassa_classe_dati');
+        const connectedRef = db.ref('.info/connected');
+
+        connectedRef.on('value', (snap) => {
+            const indicatore = document.getElementById('sync-indicator');
+            if (snap.val() === true) {
+                indicatore.innerText = "☁️ Online";
+                indicatore.className = "sync-status online";
+            } else {
+                indicatore.innerText = "⚡ Offline";
+                indicatore.className = "sync-status offline";
+            }
+        });
+        
+        dbRef.on('value', (snapshot) => {
+            const datiCloud = snapshot.val();
+            const indicatore = document.getElementById('sync-indicator');
             indicatore.innerText = "☁️ Online";
             indicatore.className = "sync-status online";
-        } else {
-            indicatore.innerText = "⚡ Offline";
-            indicatore.className = "sync-status offline";
-        }
-    });
-    
-    dbRef.on('value', (snapshot) => {
-        const datiCloud = snapshot.val();
-        
-        if (datiCloud) {
-            if (datiCloud.mesi) {
-                const rawMesi = Array.isArray(datiCloud.mesi) ? datiCloud.mesi : Object.values(datiCloud.mesi);
-                mesi = rawMesi.filter(m => m !== null && m !== undefined).map(String);
-            } else {
-                mesi = [];
-            }
-
-            entrate = normalizzaLista(datiCloud.entrate, mesi.length, true);
-            uscite = normalizzaLista(datiCloud.uscite, mesi.length, false);
             
-            renderTutto();
-        } else if (isFirstLoad) {
-            const def = getDefaultData();
-            mesi = def.mesi;
-            entrate = def.entrate;
-            uscite = def.uscite;
-            salvaDatiSuCloud();
-            renderTutto();
-        }
-        
-        isFirstLoad = false;
-    }, (error) => {
-        console.error("Errore lettura Firebase:", error);
+            if (datiCloud) {
+                if (datiCloud.mesi) {
+                    const rawMesi = Array.isArray(datiCloud.mesi) ? datiCloud.mesi : Object.values(datiCloud.mesi);
+                    mesi = rawMesi.filter(m => m !== null && m !== undefined).map(String);
+                } else {
+                    mesi = ["Mese 1"];
+                }
+
+                entrate = normalizzaLista(datiCloud.entrate, mesi.length, true);
+                uscite = normalizzaLista(datiCloud.uscite, mesi.length, false);
+                
+                renderTutto();
+            } else if (isFirstLoad) {
+                const def = getDefaultData();
+                mesi = def.mesi;
+                entrate = def.entrate;
+                uscite = def.uscite;
+                salvaDatiSuCloud();
+                renderTutto();
+            }
+            
+            isFirstLoad = false;
+        }, (error) => {
+            console.error("Errore lettura Firebase:", error);
+            const indicatore = document.getElementById('sync-indicator');
+            indicatore.innerText = "⚠️ Errore DB";
+            indicatore.className = "sync-status offline";
+        });
+    } catch (err) {
+        console.error("Errore inizializzazione Firebase:", err);
         const indicatore = document.getElementById('sync-indicator');
-        indicatore.innerText = "⚠️ Errore DB";
+        indicatore.innerText = "⚠️ Errore Rete";
         indicatore.className = "sync-status offline";
-    });
+    }
 
     function salvaDatiSuCloud() {
+        renderTutto(); // Aggiorna subito la grafica localmente
+        if (!dbRef) return;
         dbRef.set({ mesi, entrate, uscite })
             .then(() => {
                 const alertBox = document.getElementById('save-alert');
@@ -300,7 +316,7 @@
             return;
         }
         const nomeMese = mesi[meseIndex];
-        if (confirm(`Vuoi davvero eliminare il mese "${nomeMese}" e tutti gli importi associati?`)) {
+        if (confirm("Vuoi davvero eliminare il mese \"" + nomeMese + "\" e tutti gli importi associati?")) {
             mesi.splice(meseIndex, 1);
             entrate.forEach(e => e.importi.splice(meseIndex, 1));
             uscite.forEach(u => u.importi.splice(meseIndex, 1));
@@ -322,7 +338,7 @@
 
     function eliminaAlunno(rigaIndex) {
         const nome = entrate[rigaIndex].nome;
-        if (confirm(`Vuoi eliminare l'alunno "${nome}" dalla lista?`)) {
+        if (confirm("Vuoi eliminare l'alunno \"" + nome + "\" dalla lista?")) {
             entrate.splice(rigaIndex, 1);
             salvaDatiSuCloud();
         }
@@ -339,7 +355,7 @@
 
     function eliminaUscita(rigaIndex) {
         const desc = uscite[rigaIndex].desc;
-        if (confirm(`Vuoi eliminare la spesa "${desc}"?`)) {
+        if (confirm("Vuoi eliminare la spesa \"" + desc + "\"?")) {
             uscite.splice(rigaIndex, 1);
             salvaDatiSuCloud();
         }
@@ -371,18 +387,15 @@
 
     // AZZERA TUTTI GLI IMPORTI A 0.00 € E SVUOTA LE SPESE (Mantenendo l'elenco alunni)
     function azzeraTuttiIDati() {
-        if (confirm("⚠️ ATTENZIONE: Vuoi azzerare TUTTI i versamenti degli alunni a € 0.00 e cancellare tutte le spese registrate?
-
-(I nomi degli alunni e i mesi rimarranno in elenco ma con saldo a zero).")) {
+        if (confirm("⚠️ ATTENZIONE: Vuoi azzerare TUTTI i versamenti degli alunni a € 0.00 e cancellare tutte le spese registrate? (I nomi degli alunni e i mesi rimarranno in elenco ma con saldo a zero).")) {
             if (mesi.length === 0) {
-                mesi = ["Mese 1"];
+                mesi = ["Novembre"];
             }
             entrate.forEach(alunno => {
                 alunno.importi = new Array(mesi.length).fill(0);
             });
             uscite = [];
             salvaDatiSuCloud();
-            renderTutto();
         }
     }
 
@@ -394,7 +407,6 @@
             entrate = def.entrate;
             uscite = def.uscite;
             salvaDatiSuCloud();
-            renderTutto();
         }
     }
 
@@ -568,7 +580,7 @@
         const a = document.createElement('a');
         a.href = dataStr;
         const oggi = new Date().toISOString().slice(0, 10);
-        a.download = `backup_cassa_${oggi}.json`;
+        a.download = "backup_cassa_" + oggi + ".json";
         document.body.appendChild(a);
         a.click();
         a.remove();
@@ -619,11 +631,11 @@
         doc.setFontSize(18); doc.setTextColor(0, 51, 102); doc.text("Riepilogo Fondo Cassa Classe", 14, 20);
         doc.setFontSize(10); doc.setTextColor(100, 100, 100); doc.text("Generato il: " + dataStringa, 14, 28);
         doc.setFontSize(12); doc.setTextColor(0, 0, 0);
-        doc.text(`Totale Entrate: ${formatCurrency(totGenEntrate)}`, 14, 40);
-        doc.text(`Totale Uscite: ${formatCurrency(totGenUscite)}`, 14, 47);
+        doc.text("Totale Entrate: " + formatCurrency(totGenEntrate), 14, 40);
+        doc.text("Totale Uscite: " + formatCurrency(totGenUscite), 14, 47);
         doc.setFontSize(14); doc.setFont("helvetica", "bold");
         if (saldoTotale >= 0) doc.setTextColor(40, 167, 69); else doc.setTextColor(220, 53, 69);
-        doc.text(`SALDO ATTUALE IN CASSA: ${formatCurrency(saldoTotale)}`, 14, 56);
+        doc.text("SALDO ATTUALE IN CASSA: " + formatCurrency(saldoTotale), 14, 56);
         
         let finalY = 65;
         doc.setFontSize(14); doc.setTextColor(0, 123, 255); doc.text("Dettaglio Versamenti Alunni", 14, finalY);
@@ -675,7 +687,7 @@
             styles: { fontSize: 9 }
         });
 
-        doc.save(`Riepilogo_Cassa_${dataStringa.replace(/\//g, '-')}.pdf`);
+        doc.save("Riepilogo_Cassa_" + dataStringa.replace(/\//g, '-') + ".pdf");
     }
 </script>
 
