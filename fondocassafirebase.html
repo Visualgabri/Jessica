@@ -20,18 +20,19 @@
         .app-header h1 { margin: 0; font-size: 1.2rem; color: var(--text-main); flex-grow: 1; text-align: left; display: flex; align-items: center; gap: 10px;}
         .sync-status { font-size: 0.8rem; padding: 3px 8px; border-radius: 10px; background: #ffeeba; color: #856404; font-weight: bold; }
         .sync-status.online { background: #d4edda; color: #155724; }
+        .sync-status.offline { background: #f8d7da; color: #721c24; }
         .header-totale { font-weight: 700; font-size: 1.1rem; background: var(--bg-color); padding: 5px 12px; border-radius: 15px;}
         .view-section { display: none; padding: 15px; max-width: 600px; margin: 0 auto; animation: fadeIn 0.2s ease; }
         .view-section.active { display: block; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
         .section-title { margin: 10px 0 20px 0; font-size: 1.3rem; color: var(--text-main); font-weight: bold; }
         .card { background: var(--card-bg); border-radius: 12px; padding: 15px; margin-bottom: 15px; box-shadow: 0 1px 3px rgba(0,0,0,0.04); }
-        .card-title { font-weight: 600; font-size: 1.1rem; margin-bottom: 15px; padding-bottom: 10px; border-bottom: 1px solid var(--border); }
-        .card-title input[type="text"] { font-weight: 600; font-size: 1.1rem; border: none; background: transparent; padding: 0; width: 100%; color: var(--primary); outline: none; }
+        .card-title { font-weight: 600; font-size: 1.1rem; margin-bottom: 15px; padding-bottom: 10px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+        .card-title input[type="text"] { font-weight: 600; font-size: 1.1rem; border: none; background: transparent; padding: 0; width: 100%; color: var(--primary); outline: none; flex-grow: 1; }
         .card-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
         .card-row:last-child { margin-bottom: 0; }
         .card-label { color: var(--text-muted); font-size: 0.95rem; flex-grow: 1; }
-        .input-group { display: flex; align-items: center; background: var(--bg-color); border-radius: 8px; padding: 5px 10px; width: 100px; }
+        .input-group { display: flex; align-items: center; background: var(--bg-color); border-radius: 8px; padding: 5px 10px; width: 105px; }
         .input-group span { color: var(--text-muted); font-weight: 500; margin-right: 5px; }
         .input-group input { border: none; background: transparent; width: 100%; text-align: right; font-size: 16px; font-weight: 500; color: var(--text-main); outline: none; }
         .card-total { margin-top: 15px; padding-top: 10px; border-top: 1px dashed var(--border); display: flex; justify-content: space-between; font-weight: bold; }
@@ -42,12 +43,14 @@
         .dash-stats { display: flex; justify-content: space-between; background: rgba(255,255,255,0.15); border-radius: 12px; padding: 15px; }
         .stat-box { flex: 1; } .stat-box:first-child { border-right: 1px solid rgba(255,255,255,0.2); } .stat-value { font-size: 1.2rem; font-weight: bold; margin-top: 5px; }
         .month-list-item { display: flex; flex-direction: column; padding: 12px 0; border-bottom: 1px solid var(--border); } .month-list-item:last-child { border-bottom: none; padding-bottom: 0; }
-        .month-header { display: flex; justify-content: space-between; font-weight: 600; font-size: 1.05rem; margin-bottom: 8px; } .month-details { display: flex; justify-content: space-between; font-size: 0.85rem; color: var(--text-muted); } .month-details span { margin-right: 15px; }
-        .btn { background-color: var(--primary); color: white; border: none; padding: 14px 15px; border-radius: 10px; font-size: 1rem; font-weight: 600; cursor: pointer; width: 100%; margin-bottom: 12px; }
+        .month-header { display: flex; justify-content: space-between; align-items: center; font-weight: 600; font-size: 1.05rem; margin-bottom: 8px; } .month-details { display: flex; justify-content: space-between; font-size: 0.85rem; color: var(--text-muted); } .month-details span { margin-right: 15px; }
+        .btn { background-color: var(--primary); color: white; border: none; padding: 14px 15px; border-radius: 10px; font-size: 1rem; font-weight: 600; cursor: pointer; width: 100%; margin-bottom: 12px; box-sizing: border-box; }
         .btn-add { background-color: var(--green-light); color: var(--green); } 
         .btn-danger { background-color: var(--red-light); color: var(--red); } 
         .btn-outline { background-color: var(--card-bg); border: 1px solid var(--border); color: var(--text-main); }
         .btn-pdf { background-color: #e74c3c; color: white; box-shadow: 0 4px 6px rgba(231, 76, 60, 0.3);}
+        .btn-icon { background: none; border: none; color: var(--red); font-size: 1.1rem; cursor: pointer; padding: 4px 8px; border-radius: 6px; }
+        .btn-icon:hover { background: var(--red-light); }
         .bottom-nav { position: fixed; bottom: 0; width: 100%; background-color: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); display: flex; justify-content: space-around; box-shadow: 0 -1px 5px rgba(0,0,0,0.05); padding-bottom: env(safe-area-inset-bottom); z-index: 1000; border-top: 1px solid var(--border); }
         .bottom-nav button { flex: 1; background: none; border: none; padding: 12px 0; font-size: 0.75rem; color: var(--text-muted); display: flex; flex-direction: column; align-items: center; gap: 5px; cursor: pointer; font-weight: 500; }
         .bottom-nav button.active { color: var(--primary); font-weight: 700; } .nav-icon { font-size: 1.4rem; transition: transform 0.2s; } .bottom-nav button.active .nav-icon { transform: scale(1.1); }
@@ -67,16 +70,19 @@
     <button class="btn btn-pdf" onclick="generaPDF()">📄 Genera PDF per i Genitori</button>
     
     <div class="card" style="margin-top: 25px;">
-        <h3 style="margin-top:0; font-size:1.1rem; color: var(--text-muted); border-bottom:1px solid var(--border); padding-bottom:10px;">☁️ Gestione Cloud</h3>
+        <h3 style="margin-top:0; font-size:1.1rem; color: var(--text-muted); border-bottom:1px solid var(--border); padding-bottom:10px;">☁️ Gestione Cloud & Backup</h3>
         <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 15px;">I tuoi dati vengono salvati automaticamente su internet in tempo reale.</p>
         <button class="btn btn-outline" onclick="aggiungiMese()">➕ Aggiungi Nuovo Mese</button>
-        <button class="btn btn-outline" onclick="scaricaBackupClassico()">⬇️ Scarica Backup Manuale (Sicurezza)</button>
-        <button class="btn btn-danger" onclick="resetDati()">⚠️ Azzera Tutto il Database Cloud</button>
+        <button class="btn btn-outline" onclick="scaricaBackupClassico()">⬇️ Scarica Backup Manuale (JSON)</button>
+        <button class="btn btn-outline" onclick="document.getElementById('file-import').click()">⬆️ Ripristina da File Backup (JSON)</button>
+        <input type="file" id="file-import" style="display:none" accept=".json" onchange="importaBackupClassico(event)">
+        <button class="btn btn-danger" onclick="resetDati()">⚠️ Ripristina Valori Iniziali di Default</button>
     </div>
 </div>
 
 <div id="view-entrate" class="view-section">
     <h2 class="section-title">Versamenti Alunni</h2>
+    <button class="btn btn-add" style="margin-bottom: 20px;" onclick="aggiungiAlunno()">➕ Aggiungi Nuovo Alunno</button>
     <div id="container-entrate"></div>
 </div>
 
@@ -96,72 +102,160 @@
 
 <script>
     // ==========================================
-    // 1. CONFIGURAZIONE FIREBASE (SOSTITUISCI QUI SOTTO!)
+    // 1. CONFIGURAZIONE FIREBASE
     // ==========================================
-const firebaseConfig = {
-  apiKey: "AIzaSyDxsiTStJTiVGTqSa1c8iIZrniC3DeVmLw",
-  authDomain: "cassa-classe.firebaseapp.com",
-  databaseURL: "https://cassa-classe-default-rtdb.europe-west1.firebasedatabase.app/",
-  projectId: "cassa-classe",
-  storageBucket: "cassa-classe.firebasestorage.app",
-  messagingSenderId: "589025376495",
-  appId: "1:589025376495:web:9aecc26075cf285eec831a"
-};
+    const firebaseConfig = {
+        apiKey: "AIzaSyDxsiTStJTiVGTqSa1c8iIZrniC3DeVmLw",
+        authDomain: "cassa-classe.firebaseapp.com",
+        databaseURL: "https://cassa-classe-default-rtdb.europe-west1.firebasedatabase.app/",
+        projectId: "cassa-classe",
+        storageBucket: "cassa-classe.firebasestorage.app",
+        messagingSenderId: "589025376495",
+        appId: "1:589025376495:web:9aecc26075cf285eec831a"
+    };
 
     // Inizializza Firebase
     firebase.initializeApp(firebaseConfig);
     const db = firebase.database();
-    
-    // Riferimento al nostro database specifico
     const dbRef = db.ref('cassa_classe_dati');
+    const connectedRef = db.ref('.info/connected');
 
     // ==========================================
-    // DATI DI DEFAULT (Usati solo se il database è completamente vuoto)
+    // DATI DI DEFAULT (Funzione generatrice pulita)
     // ==========================================
-    let mesi = ["Novembre", "Maggio"];
-    let entrate = [
-        { nome: "AGOLLI KEVIN", importi: [10.00, 9.00] }, { nome: "BAGLIONI LEONARDO", importi: [10.00, 9.00] },
-        { nome: "BELMONTE JULIE", importi: [10.00, 9.00] }, { nome: "BRUNETTI GIORGIA", importi: [10.00, 9.00] },
-        { nome: "CASTELLANI DAMIANO", importi: [10.00, 9.00] }, { nome: "DARDHA MATTIA", importi: [10.00, 9.00] },
-        { nome: "EDE CHIARA ELISABETH", importi: [10.00, 9.00] }, { nome: "FARDELLA SANTIAGO", importi: [10.00, 9.00] },
-        { nome: "FIORITI RICCARDO", importi: [10.00, 9.00] }, { nome: "GENNARINI ILARY", importi: [10.00, 9.00] },
-        { nome: "GIAIMÈ PIETRO", importi: [10.00, 9.00] }, { nome: "HASKAJ MICHELE", importi: [10.00, 9.00] },
-        { nome: "GUARNIERI GIULIA PIA", importi: [10.00, 0.00] }, { nome: "MENICONI NOEMI", importi: [10.00, 9.00] },
-        { nome: "MORETTONI ALEX", importi: [10.00, 9.00] }, { nome: "PASCOLINI DAMIANO", importi: [10.00, 9.00] },
-        { nome: "PICCHIARELLI ANDREA", importi: [10.00, 9.00] }, { nome: "VARANI FILIPPO", importi: [10.00, 9.00] }
-    ];
-    let uscite = [
-        { desc: "Regali Natale", importi: [51.00, 0.00] }, { desc: "Merenda Carnevale", importi: [50.47, 0.00] }
-    ];
+    function getDefaultData() {
+        return {
+            mesi: ["Novembre", "Maggio"],
+            entrate: [
+                { nome: "AGOLLI KEVIN", importi: [10.00, 9.00] }, { nome: "BAGLIONI LEONARDO", importi: [10.00, 9.00] },
+                { nome: "BELMONTE JULIE", importi: [10.00, 9.00] }, { nome: "BRUNETTI GIORGIA", importi: [10.00, 9.00] },
+                { nome: "CASTELLANI DAMIANO", importi: [10.00, 9.00] }, { nome: "DARDHA MATTIA", importi: [10.00, 9.00] },
+                { nome: "EDE CHIARA ELISABETH", importi: [10.00, 9.00] }, { nome: "FARDELLA SANTIAGO", importi: [10.00, 9.00] },
+                { nome: "FIORITI RICCARDO", importi: [10.00, 9.00] }, { nome: "GENNARINI ILARY", importi: [10.00, 9.00] },
+                { nome: "GIAIMÈ PIETRO", importi: [10.00, 9.00] }, { nome: "HASKAJ MICHELE", importi: [10.00, 9.00] },
+                { nome: "GUARNIERI GIULIA PIA", importi: [10.00, 0.00] }, { nome: "MENICONI NOEMI", importi: [10.00, 9.00] },
+                { nome: "MORETTONI ALEX", importi: [10.00, 9.00] }, { nome: "PASCOLINI DAMIANO", importi: [10.00, 9.00] },
+                { nome: "PICCHIARELLI ANDREA", importi: [10.00, 9.00] }, { nome: "VARANI FILIPPO", importi: [10.00, 9.00] }
+            ],
+            uscite: [
+                { desc: "Regali Natale", importi: [51.00, 0.00] }, { desc: "Merenda Carnevale", importi: [50.47, 0.00] }
+            ]
+        };
+    }
+
+    let defaultInit = getDefaultData();
+    let mesi = defaultInit.mesi;
+    let entrate = defaultInit.entrate;
+    let uscite = defaultInit.uscite;
 
     let isFirstLoad = true;
+    let alertTimeout = null;
 
     // ==========================================
-    // MOTORE CLOUD: LETTURA E SCRITTURA
+    // UTILITY DI SICUREZZA E NORMALIZZAZIONE FIREBASE
     // ==========================================
     
-    // In ascolto continuo su Firebase
+    // Converte qualsiasi valore in numero sicuro o 0
+    function parseSafeFloat(val) {
+        if (typeof val === 'string') {
+            val = val.replace(',', '.');
+        }
+        let num = parseFloat(val);
+        return isNaN(num) ? 0 : Math.round(num * 100) / 100;
+    }
+
+    // Protegge da attacchi XSS o rottura dell'HTML (es. virgolette nei nomi delle spese)
+    function escapeHtml(str) {
+        if (str === null || str === undefined) return '';
+        return String(str)
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#039;');
+    }
+
+    // FIX BUG CRITICO FIREBASE: Firebase trasforma gli array con buchi in Oggetti o elimina gli array vuoti.
+    // Questa funzione ricostruisce sempre array perfetti della stessa lunghezza di `mesi`.
+    function normalizzaImporti(rawImporti, numMesi) {
+        let arr = new Array(numMesi).fill(0);
+        if (!rawImporti) return arr;
+        for (let i = 0; i < numMesi; i++) {
+            if (rawImporti[i] !== undefined && rawImporti[i] !== null) {
+                arr[i] = parseSafeFloat(rawImporti[i]);
+            }
+        }
+        return arr;
+    }
+
+    function normalizzaLista(rawList, numMesi, isEntrata) {
+        if (!rawList) return [];
+        const lista = Array.isArray(rawList) ? rawList : Object.values(rawList);
+        return lista.filter(item => item !== null && item !== undefined).map(item => {
+            if (isEntrata) {
+                return {
+                    nome: item.nome ? String(item.nome) : "Alunno senza nome",
+                    importi: normalizzaImporti(item.importi, numMesi)
+                };
+            } else {
+                return {
+                    desc: item.desc !== undefined ? String(item.desc) : "Spesa",
+                    importi: normalizzaImporti(item.importi, numMesi)
+                };
+            }
+        });
+    }
+
+    // ==========================================
+    // MOTORE CLOUD: STATO RETE, LETTURA E SCRITTURA
+    // ==========================================
+
+    // Monitoraggio reale della connessione a Firebase
+    connectedRef.on('value', (snap) => {
+        const indicatore = document.getElementById('sync-indicator');
+        if (snap.val() === true) {
+            indicatore.innerText = "☁️ Online";
+            indicatore.className = "sync-status online";
+        } else {
+            indicatore.innerText = "⚡ Offline";
+            indicatore.className = "sync-status offline";
+        }
+    });
+    
+    // In ascolto continuo sui dati su Firebase
     dbRef.on('value', (snapshot) => {
         const datiCloud = snapshot.val();
         
         if (datiCloud) {
-            // Se ci sono dati sul cloud, aggiorna le variabili locali
-            mesi = datiCloud.mesi || [];
-            entrate = datiCloud.entrate || [];
-            uscite = datiCloud.uscite || [];
-            
-            // Aggiorna indicatore
-            const indicatore = document.getElementById('sync-indicator');
-            indicatore.innerText = "☁️ Online";
-            indicatore.className = "sync-status online";
+            // Normalizzazione Mesi
+            if (datiCloud.mesi) {
+                const rawMesi = Array.isArray(datiCloud.mesi) ? datiCloud.mesi : Object.values(datiCloud.mesi);
+                mesi = rawMesi.filter(m => m !== null && m !== undefined).map(String);
+            } else {
+                mesi = [];
+            }
+
+            // Normalizzazione Entrate e Uscite
+            entrate = normalizzaLista(datiCloud.entrate, mesi.length, true);
+            uscite = normalizzaLista(datiCloud.uscite, mesi.length, false);
             
             renderTutto();
         } else if (isFirstLoad) {
             // Se il database cloud è vuoto (prima volta assoluta), carica i dati di default
+            const def = getDefaultData();
+            mesi = def.mesi;
+            entrate = def.entrate;
+            uscite = def.uscite;
             salvaDatiSuCloud();
+            renderTutto();
         }
         
         isFirstLoad = false;
+    }, (error) => {
+        console.error("Errore lettura Firebase:", error);
+        const indicatore = document.getElementById('sync-indicator');
+        indicatore.innerText = "⚠️ Errore DB";
+        indicatore.className = "sync-status offline";
     });
 
     // Funzione che spinge i dati su Internet
@@ -170,11 +264,14 @@ const firebaseConfig = {
             .then(() => {
                 const alertBox = document.getElementById('save-alert');
                 alertBox.style.display = 'block';
-                setTimeout(() => alertBox.style.display = 'none', 1500);
+                if (alertTimeout) clearTimeout(alertTimeout);
+                alertTimeout = setTimeout(() => { alertBox.style.display = 'none'; }, 1500);
             })
             .catch((error) => {
                 alert("Errore di sincronizzazione: " + error.message);
-                document.getElementById('sync-indicator').innerText = "⚠️ Errore";
+                const indicatore = document.getElementById('sync-indicator');
+                indicatore.innerText = "⚠️ Errore";
+                indicatore.className = "sync-status offline";
             });
     }
 
@@ -182,7 +279,9 @@ const firebaseConfig = {
     // FUNZIONI APP
     // ==========================================
 
-    function formatCurrency(num) { return "€ " + parseFloat(num).toFixed(2); }
+    function formatCurrency(num) {
+        return "€ " + parseSafeFloat(num).toFixed(2);
+    }
 
     function cambiaScheda(schedaTarget) {
         document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active'));
@@ -196,37 +295,107 @@ const firebaseConfig = {
         const nuovoMese = prompt("Nome del nuovo mese (es. Giugno):");
         if (nuovoMese && nuovoMese.trim() !== "") {
             mesi.push(nuovoMese.trim());
-            entrate.forEach(e => e.importi.push(0)); uscite.forEach(u => u.importi.push(0));
+            entrate.forEach(e => e.importi.push(0));
+            uscite.forEach(u => u.importi.push(0));
+            salvaDatiSuCloud();
+        }
+    }
+
+    function eliminaMese(meseIndex) {
+        if (mesi.length <= 1) {
+            alert("Deve rimanere almeno un mese attivo in cassa.");
+            return;
+        }
+        const nomeMese = mesi[meseIndex];
+        if (confirm(`Vuoi davvero eliminare il mese "${nomeMese}" e tutti gli importi associati?`)) {
+            mesi.splice(meseIndex, 1);
+            entrate.forEach(e => e.importi.splice(meseIndex, 1));
+            uscite.forEach(u => u.importi.splice(meseIndex, 1));
+            salvaDatiSuCloud();
+        }
+    }
+
+    function aggiungiAlunno() {
+        const nomeAlunno = prompt("Inserisci Cognome e Nome del nuovo alunno:");
+        if (nomeAlunno && nomeAlunno.trim() !== "") {
+            entrate.push({
+                nome: nomeAlunno.trim().toUpperCase(),
+                importi: new Array(mesi.length).fill(0)
+            });
+            // Ordina alfabeticamente per mantenere la lista pulita
+            entrate.sort((a, b) => a.nome.localeCompare(b.nome, 'it'));
+            salvaDatiSuCloud();
+        }
+    }
+
+    function eliminaAlunno(rigaIndex) {
+        const nome = entrate[rigaIndex].nome;
+        if (confirm(`Vuoi eliminare l'alunno "${nome}" dalla lista?`)) {
+            entrate.splice(rigaIndex, 1);
             salvaDatiSuCloud();
         }
     }
 
     function aggiungiUscita() {
-        uscite.unshift({ desc: "Nome Nuova Spesa", importi: new Array(mesi.length).fill(0) }); 
+        if (mesi.length === 0) {
+            alert("Aggiungi almeno un mese prima di registrare una spesa.");
+            return;
+        }
+        uscite.unshift({ desc: "Nuova Spesa", importi: new Array(mesi.length).fill(0) }); 
         salvaDatiSuCloud(); 
     }
 
+    function eliminaUscita(rigaIndex) {
+        const desc = uscite[rigaIndex].desc;
+        if (confirm(`Vuoi eliminare la spesa "${desc}"?`)) {
+            uscite.splice(rigaIndex, 1);
+            salvaDatiSuCloud();
+        }
+    }
+
     function updateValore(tipo, rigaIndex, meseIndex, valore) {
-        let val = parseFloat(valore); if (isNaN(val)) val = 0;
-        if (tipo === 'entrate') entrate[rigaIndex].importi[meseIndex] = val; else uscite[rigaIndex].importi[meseIndex] = val;
-        salvaDatiSuCloud(); // Scrive subito su Internet
+        let val = parseSafeFloat(valore);
+        if (tipo === 'entrate') {
+            if (entrate[rigaIndex]) entrate[rigaIndex].importi[meseIndex] = val;
+        } else {
+            if (uscite[rigaIndex]) uscite[rigaIndex].importi[meseIndex] = val;
+        }
+        salvaDatiSuCloud();
     }
     
-    function updateDescUscita(rigaIndex, valore) { uscite[rigaIndex].desc = valore; salvaDatiSuCloud(); }
+    function updateDescUscita(rigaIndex, valore) {
+        if (uscite[rigaIndex]) {
+            uscite[rigaIndex].desc = valore.trim() || "Spesa senza nome";
+            salvaDatiSuCloud();
+        }
+    }
+
+    function updateNomeAlunno(rigaIndex, valore) {
+        if (entrate[rigaIndex]) {
+            entrate[rigaIndex].nome = valore.trim() || "Alunno";
+            salvaDatiSuCloud();
+        }
+    }
 
     function resetDati() {
-        if(confirm("Attenzione: Vuoi azzerare il database online? Tutti quelli che usano l'app perderanno i dati correnti.")) {
-            dbRef.remove().then(() => {
-                location.reload(); 
-            });
+        if (confirm("Attenzione: Vuoi ripristinare il database ai valori iniziali di default? Tutti i cambiamenti non salvati in un backup andranno persi.")) {
+            const def = getDefaultData();
+            mesi = def.mesi;
+            entrate = def.entrate;
+            uscite = def.uscite;
+            salvaDatiSuCloud();
         }
     }
 
     // ==========================================
-    // RENDER GRAFICO 
+    // RENDER GRAFICO (CON PROTEZIONE FOCUS E XSS)
     // ==========================================
 
-    function renderTutto() { renderRiepilogo(); renderEntrate(); renderUscite(); }
+    function renderTutto() {
+        renderRiepilogo();
+        renderEntrate();
+        renderUscite();
+    }
 
     function renderRiepilogo() {
         const container = document.getElementById('container-dashboard');
@@ -234,10 +403,27 @@ const firebaseConfig = {
         let totUsciteMesi = new Array(mesi.length).fill(0);
         let totGenEntrate = 0, totGenUscite = 0;
         
-        entrate.forEach(r => r.importi.forEach((v, i) => { totEntrateMesi[i] += v; totGenEntrate += v; }));
-        uscite.forEach(r => r.importi.forEach((v, i) => { totUsciteMesi[i] += v; totGenUscite += v; }));
+        entrate.forEach(r => {
+            (r.importi || []).forEach((v, i) => {
+                if (i < mesi.length) {
+                    let num = parseSafeFloat(v);
+                    totEntrateMesi[i] += num;
+                    totGenEntrate += num;
+                }
+            });
+        });
 
-        let saldoTotale = totGenEntrate - totGenUscite;
+        uscite.forEach(r => {
+            (r.importi || []).forEach((v, i) => {
+                if (i < mesi.length) {
+                    let num = parseSafeFloat(v);
+                    totUsciteMesi[i] += num;
+                    totGenUscite += num;
+                }
+            });
+        });
+
+        let saldoTotale = Math.round((totGenEntrate - totGenUscite) * 100) / 100;
         
         let html = `
             <div class="dashboard-main">
@@ -248,17 +434,28 @@ const firebaseConfig = {
                     <div class="stat-box"><div class="dash-label">Tot. Uscite</div><div class="stat-value">↓ ${formatCurrency(totGenUscite)}</div></div>
                 </div>
             </div>
-            <div class="card"><div class="card-title" style="border:none; margin-bottom:5px;">📅 Storico Mensile</div>`;
+            <div class="card"><div class="card-title" style="border:none; margin-bottom:5px;"><span>📅 Storico Mensile (Saldo Progressivo)</span></div>`;
         
         let saldoProgressivo = 0;
         mesi.forEach((mese, i) => {
             let rimanenteMese = totEntrateMesi[i] - totUsciteMesi[i]; 
-            saldoProgressivo += rimanenteMese;
+            saldoProgressivo = Math.round((saldoProgressivo + rimanenteMese) * 100) / 100;
             let coloreSaldo = saldoProgressivo >= 0 ? "val-green" : "val-red";
             html += `
                 <div class="month-list-item">
-                    <div class="month-header"><span>${mese}</span><span class="${coloreSaldo}">${formatCurrency(saldoProgressivo)}</span></div>
-                    <div class="month-details"><div><span style="color:var(--green)">+${formatCurrency(totEntrateMesi[i])}</span> <span style="color:var(--red)">-${formatCurrency(totUsciteMesi[i])}</span></div></div>
+                    <div class="month-header">
+                        <span>${escapeHtml(mese)}</span>
+                        <div style="display:flex; align-items:center; gap:10px;">
+                            <span class="${coloreSaldo}">${formatCurrency(saldoProgressivo)}</span>
+                            <button class="btn-icon" title="Elimina mese" onclick="eliminaMese(${i})">🗑️</button>
+                        </div>
+                    </div>
+                    <div class="month-details">
+                        <div>
+                            <span style="color:var(--green)">Entrate: +${formatCurrency(totEntrateMesi[i])}</span>
+                            <span style="color:var(--red)">Uscite: -${formatCurrency(totUsciteMesi[i])}</span>
+                        </div>
+                    </div>
                 </div>`;
         });
         html += `</div>`;
@@ -270,46 +467,143 @@ const firebaseConfig = {
     }
 
     function renderEntrate() {
-        const container = document.getElementById('container-entrate'); container.innerHTML = '';
+        const container = document.getElementById('container-entrate');
+        let htmlBuffer = '';
+
         entrate.forEach((row, rowIndex) => {
-            let totAlunno = 0; let righeHtml = '';
-            row.importi.forEach((val, meseIndex) => {
-                totAlunno += val;
-                righeHtml += `<div class="card-row"><span class="card-label">${mesi[meseIndex]}</span><div class="input-group"><span>€</span><input type="number" step="0.01" value="${val.toFixed(2)}" onfocus="this.select()" onchange="updateValore('entrate', ${rowIndex}, ${meseIndex}, this.value)"></div></div>`;
+            let totAlunno = 0;
+            let righeHtml = '';
+            (row.importi || []).forEach((val, meseIndex) => {
+                if (meseIndex < mesi.length) {
+                    let num = parseSafeFloat(val);
+                    totAlunno += num;
+                    righeHtml += `
+                        <div class="card-row">
+                            <span class="card-label">${escapeHtml(mesi[meseIndex])}</span>
+                            <div class="input-group">
+                                <span>€</span>
+                                <input type="number" step="0.01" value="${num.toFixed(2)}" onfocus="this.select()" onchange="updateValore('entrate', ${rowIndex}, ${meseIndex}, this.value)">
+                            </div>
+                        </div>`;
+                }
             });
-            container.innerHTML += `<div class="card"><div class="card-title">${rowIndex + 1}. ${row.nome}</div>${righeHtml}<div class="card-total"><span>Totale Versato</span><span class="val-green">${formatCurrency(totAlunno)}</span></div></div>`;
+            htmlBuffer += `
+                <div class="card">
+                    <div class="card-title">
+                        <span style="color:var(--text-muted); font-size:0.95rem;">${rowIndex + 1}.</span>
+                        <input type="text" value="${escapeHtml(row.nome)}" onfocus="this.select()" onchange="updateNomeAlunno(${rowIndex}, this.value)">
+                        <button class="btn-icon" title="Elimina alunno" onclick="eliminaAlunno(${rowIndex})">🗑️</button>
+                    </div>
+                    ${righeHtml}
+                    <div class="card-total">
+                        <span>Totale Versato</span>
+                        <span class="val-green">${formatCurrency(totAlunno)}</span>
+                    </div>
+                </div>`;
         });
+
+        container.innerHTML = htmlBuffer;
     }
 
     function renderUscite() {
-        const container = document.getElementById('container-uscite'); container.innerHTML = '';
+        const container = document.getElementById('container-uscite');
+        let htmlBuffer = '';
+
+        if (uscite.length === 0) {
+            container.innerHTML = `<div class="card" style="text-align:center; color:var(--text-muted); padding: 30px 15px;">Nessuna spesa registrata. Clicca su "➕ Registra Nuova Spesa" per iniziare.</div>`;
+            return;
+        }
+
         uscite.forEach((row, rowIndex) => {
-            let totSpesa = 0; let righeHtml = '';
-            row.importi.forEach((val, meseIndex) => {
-                totSpesa += val;
-                righeHtml += `<div class="card-row"><span class="card-label">${mesi[meseIndex]}</span><div class="input-group"><span>€</span><input type="number" step="0.01" value="${val.toFixed(2)}" onfocus="this.select()" onchange="updateValore('uscite', ${rowIndex}, ${meseIndex}, this.value)"></div></div>`;
+            let totSpesa = 0;
+            let righeHtml = '';
+            (row.importi || []).forEach((val, meseIndex) => {
+                if (meseIndex < mesi.length) {
+                    let num = parseSafeFloat(val);
+                    totSpesa += num;
+                    righeHtml += `
+                        <div class="card-row">
+                            <span class="card-label">${escapeHtml(mesi[meseIndex])}</span>
+                            <div class="input-group">
+                                <span>€</span>
+                                <input type="number" step="0.01" value="${num.toFixed(2)}" onfocus="this.select()" onchange="updateValore('uscite', ${rowIndex}, ${meseIndex}, this.value)">
+                            </div>
+                        </div>`;
+                }
             });
-            container.innerHTML += `<div class="card"><div class="card-title" style="border-bottom: 2px solid var(--red-light);"><input type="text" value="${row.desc}" onfocus="this.select()" onchange="updateDescUscita(${rowIndex}, this.value)"></div>${righeHtml}<div class="card-total"><span>Costo Totale</span><span class="val-red">${formatCurrency(totSpesa)}</span></div></div>`;
+            htmlBuffer += `
+                <div class="card">
+                    <div class="card-title" style="border-bottom: 2px solid var(--red-light);">
+                        <input type="text" value="${escapeHtml(row.desc)}" onfocus="this.select()" onchange="updateDescUscita(${rowIndex}, this.value)">
+                        <button class="btn-icon" title="Elimina spesa" onclick="eliminaUscita(${rowIndex})">🗑️</button>
+                    </div>
+                    ${righeHtml}
+                    <div class="card-total">
+                        <span>Costo Totale</span>
+                        <span class="val-red">${formatCurrency(totSpesa)}</span>
+                    </div>
+                </div>`;
         });
+
+        container.innerHTML = htmlBuffer;
     }
 
     // ==========================================
-    // BACKUP E PDF
+    // BACKUP, RIPRISTINO E PDF
     // ==========================================
 
     function scaricaBackupClassico() {
         const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify({ mesi, entrate, uscite }, null, 2));
-        const a = document.createElement('a'); a.href = dataStr; a.download = "backup_cassa.json"; document.body.appendChild(a); a.click(); a.remove();
+        const a = document.createElement('a');
+        a.href = dataStr;
+        const oggi = new Date().toISOString().slice(0, 10);
+        a.download = `backup_cassa_${oggi}.json`;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+    }
+
+    function importaBackupClassico(event) {
+        const file = event.target.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            try {
+                const contenuto = JSON.parse(e.target.result);
+                if (!contenuto.mesi || !Array.isArray(contenuto.mesi)) {
+                    throw new Error("Formato file non valido: manca l'elenco dei mesi.");
+                }
+                if (confirm("Vuoi sovrascrivere i dati attuali nel Cloud con quelli del file di backup selezionato?")) {
+                    mesi = contenuto.mesi.map(String);
+                    entrate = normalizzaLista(contenuto.entrate, mesi.length, true);
+                    uscite = normalizzaLista(contenuto.uscite, mesi.length, false);
+                    salvaDatiSuCloud();
+                }
+            } catch (err) {
+                alert("Errore durante il caricamento del file di backup: " + err.message);
+            } finally {
+                event.target.value = ''; // Reset input file
+            }
+        };
+        reader.readAsText(file);
     }
 
     function generaPDF() {
+        if (!window.jspdf || !window.jspdf.jsPDF) {
+            alert("La libreria PDF non è ancora stata caricata. Verifica la connessione internet e riprova.");
+            return;
+        }
+
         const { jsPDF } = window.jspdf;
-        const doc = new jsPDF();
+        // Se ci sono più di 4 mesi, usa il formato orizzontale (landscape) per non tagliare le colonne
+        const orientamento = mesi.length > 4 ? 'landscape' : 'portrait';
+        const doc = new jsPDF({ orientation: orientamento });
         
-        let totGenEntrate = 0; let totGenUscite = 0;
-        entrate.forEach(r => r.importi.forEach(v => totGenEntrate += v));
-        uscite.forEach(r => r.importi.forEach(v => totGenUscite += v));
-        let saldoTotale = totGenEntrate - totGenUscite;
+        let totGenEntrate = 0;
+        let totGenUscite = 0;
+        entrate.forEach(r => (r.importi || []).forEach(v => totGenEntrate += parseSafeFloat(v)));
+        uscite.forEach(r => (r.importi || []).forEach(v => totGenUscite += parseSafeFloat(v)));
+        let saldoTotale = Math.round((totGenEntrate - totGenUscite) * 100) / 100;
         const dataStringa = new Date().toLocaleDateString('it-IT');
 
         doc.setFontSize(18); doc.setTextColor(0, 51, 102); doc.text("Riepilogo Fondo Cassa Classe", 14, 20);
@@ -318,7 +612,7 @@ const firebaseConfig = {
         doc.text(`Totale Entrate: ${formatCurrency(totGenEntrate)}`, 14, 40);
         doc.text(`Totale Uscite: ${formatCurrency(totGenUscite)}`, 14, 47);
         doc.setFontSize(14); doc.setFont("helvetica", "bold");
-        if(saldoTotale >= 0) doc.setTextColor(40, 167, 69); else doc.setTextColor(220, 53, 69);
+        if (saldoTotale >= 0) doc.setTextColor(40, 167, 69); else doc.setTextColor(220, 53, 69);
         doc.text(`SALDO ATTUALE IN CASSA: ${formatCurrency(saldoTotale)}`, 14, 56);
         
         let finalY = 65;
@@ -326,28 +620,53 @@ const firebaseConfig = {
         
         let entrateHead = [["Alunno", ...mesi, "Tot. Versato"]];
         let entrateBody = entrate.map(row => {
-            let totAlunno = 0; let rowData = [row.nome];
-            row.importi.forEach(val => { totAlunno += val; rowData.push(formatCurrency(val)); });
-            rowData.push(formatCurrency(totAlunno)); return rowData;
+            let totAlunno = 0;
+            let rowData = [row.nome];
+            (row.importi || []).forEach(val => {
+                let num = parseSafeFloat(val);
+                totAlunno += num;
+                rowData.push(formatCurrency(num));
+            });
+            rowData.push(formatCurrency(totAlunno));
+            return rowData;
         });
 
-        doc.autoTable({ startY: finalY + 5, head: entrateHead, body: entrateBody, headStyles: { fillColor: [0, 123, 255] }, styles: { fontSize: 9 } });
+        doc.autoTable({
+            startY: finalY + 5,
+            head: entrateHead,
+            body: entrateBody,
+            headStyles: { fillColor: [0, 123, 255] },
+            styles: { fontSize: 9 }
+        });
 
         finalY = doc.lastAutoTable.finalY + 15; 
-        if (finalY > 250) { doc.addPage(); finalY = 20; }
+        const limitePagina = orientamento === 'landscape' ? 175 : 250;
+        if (finalY > limitePagina) { doc.addPage(); finalY = 20; }
 
         doc.setFontSize(14); doc.setTextColor(220, 53, 69); doc.text("Dettaglio Uscite e Spese", 14, finalY);
         let usciteHead = [["Causale Spesa", ...mesi, "Tot. Spesa"]];
         let usciteBody = uscite.map(row => {
-            let totSpesa = 0; let rowData = [row.desc];
-            row.importi.forEach(val => { totSpesa += val; rowData.push(formatCurrency(val)); });
-            rowData.push(formatCurrency(totSpesa)); return rowData;
+            let totSpesa = 0;
+            let rowData = [row.desc];
+            (row.importi || []).forEach(val => {
+                let num = parseSafeFloat(val);
+                totSpesa += num;
+                rowData.push(formatCurrency(num));
+            });
+            rowData.push(formatCurrency(totSpesa));
+            return rowData;
         });
 
-        doc.autoTable({ startY: finalY + 5, head: usciteHead, body: usciteBody, headStyles: { fillColor: [220, 53, 69] }, styles: { fontSize: 9 } });
+        doc.autoTable({
+            startY: finalY + 5,
+            head: usciteHead,
+            body: usciteBody,
+            headStyles: { fillColor: [220, 53, 69] },
+            styles: { fontSize: 9 }
+        });
+
         doc.save(`Riepilogo_Cassa_${dataStringa.replace(/\//g, '-')}.pdf`);
     }
-
 </script>
 
 </body>
