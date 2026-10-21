@@ -14,7 +14,7 @@
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
 
     <style>
-        :root { --bg-color: #f2f2f7; --card-bg: #ffffff; --primary: #007bff; --text-main: #1c1e21; --text-muted: #8e8e93; --border: #e5e5ea; --green: #34c759; --green-light: #e6f4ea; --red: #ff3b30; --red-light: #fce8e6; }
+        :root { --bg-color: #f2f2f7; --card-bg: #ffffff; --primary: #007bff; --text-main: #1c1e21; --text-muted: #8e8e93; --border: #e5e5ea; --green: #34c759; --green-light: #e6f4ea; --red: #ff3b30; --red-light: #fce8e6; --orange: #ff9500; --orange-light: #fff5e5; }
         body { font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, Helvetica, sans-serif; background-color: var(--bg-color); color: var(--text-main); margin: 0; padding: 0 0 90px 0; -webkit-font-smoothing: antialiased; }
         .app-header { background-color: var(--card-bg); padding: 15px 20px; text-align: center; position: sticky; top: 0; z-index: 100; box-shadow: 0 1px 3px rgba(0,0,0,0.05); display: flex; justify-content: space-between; align-items: center; }
         .app-header h1 { margin: 0; font-size: 1.2rem; color: var(--text-main); flex-grow: 1; text-align: left; display: flex; align-items: center; gap: 10px;}
@@ -46,6 +46,7 @@
         .month-header { display: flex; justify-content: space-between; align-items: center; font-weight: 600; font-size: 1.05rem; margin-bottom: 8px; } .month-details { display: flex; justify-content: space-between; font-size: 0.85rem; color: var(--text-muted); } .month-details span { margin-right: 15px; }
         .btn { background-color: var(--primary); color: white; border: none; padding: 14px 15px; border-radius: 10px; font-size: 1rem; font-weight: 600; cursor: pointer; width: 100%; margin-bottom: 12px; box-sizing: border-box; }
         .btn-add { background-color: var(--green-light); color: var(--green); } 
+        .btn-warning { background-color: var(--orange-light); color: #cc7700; }
         .btn-danger { background-color: var(--red-light); color: var(--red); } 
         .btn-outline { background-color: var(--card-bg); border: 1px solid var(--border); color: var(--text-main); }
         .btn-pdf { background-color: #e74c3c; color: white; box-shadow: 0 4px 6px rgba(231, 76, 60, 0.3);}
@@ -76,7 +77,9 @@
         <button class="btn btn-outline" onclick="scaricaBackupClassico()">⬇️ Scarica Backup Manuale (JSON)</button>
         <button class="btn btn-outline" onclick="document.getElementById('file-import').click()">⬆️ Ripristina da File Backup (JSON)</button>
         <input type="file" id="file-import" style="display:none" accept=".json" onchange="importaBackupClassico(event)">
-        <button class="btn btn-danger" onclick="resetDati()">⚠️ Ripristina Valori Iniziali di Default</button>
+        <hr style="border:none; border-top:1px solid var(--border); margin: 15px 0;">
+        <button class="btn btn-danger" onclick="azzeraTuttiIDati()">🧹 Azzera Tutti gli Importi e le Spese (€ 0.00)</button>
+        <button class="btn btn-warning" onclick="resetDati()">🔄 Ripristina Dati Iniziali preimpostati</button>
     </div>
 </div>
 
@@ -155,7 +158,6 @@
     // UTILITY DI SICUREZZA E NORMALIZZAZIONE FIREBASE
     // ==========================================
     
-    // Converte qualsiasi valore in numero sicuro o 0
     function parseSafeFloat(val) {
         if (typeof val === 'string') {
             val = val.replace(',', '.');
@@ -164,7 +166,6 @@
         return isNaN(num) ? 0 : Math.round(num * 100) / 100;
     }
 
-    // Protegge da attacchi XSS o rottura dell'HTML (es. virgolette nei nomi delle spese)
     function escapeHtml(str) {
         if (str === null || str === undefined) return '';
         return String(str)
@@ -175,8 +176,6 @@
             .replace(/'/g, '&#039;');
     }
 
-    // FIX BUG CRITICO FIREBASE: Firebase trasforma gli array con buchi in Oggetti o elimina gli array vuoti.
-    // Questa funzione ricostruisce sempre array perfetti della stessa lunghezza di `mesi`.
     function normalizzaImporti(rawImporti, numMesi) {
         let arr = new Array(numMesi).fill(0);
         if (!rawImporti) return arr;
@@ -210,7 +209,6 @@
     // MOTORE CLOUD: STATO RETE, LETTURA E SCRITTURA
     // ==========================================
 
-    // Monitoraggio reale della connessione a Firebase
     connectedRef.on('value', (snap) => {
         const indicatore = document.getElementById('sync-indicator');
         if (snap.val() === true) {
@@ -222,12 +220,10 @@
         }
     });
     
-    // In ascolto continuo sui dati su Firebase
     dbRef.on('value', (snapshot) => {
         const datiCloud = snapshot.val();
         
         if (datiCloud) {
-            // Normalizzazione Mesi
             if (datiCloud.mesi) {
                 const rawMesi = Array.isArray(datiCloud.mesi) ? datiCloud.mesi : Object.values(datiCloud.mesi);
                 mesi = rawMesi.filter(m => m !== null && m !== undefined).map(String);
@@ -235,13 +231,11 @@
                 mesi = [];
             }
 
-            // Normalizzazione Entrate e Uscite
             entrate = normalizzaLista(datiCloud.entrate, mesi.length, true);
             uscite = normalizzaLista(datiCloud.uscite, mesi.length, false);
             
             renderTutto();
         } else if (isFirstLoad) {
-            // Se il database cloud è vuoto (prima volta assoluta), carica i dati di default
             const def = getDefaultData();
             mesi = def.mesi;
             entrate = def.entrate;
@@ -258,7 +252,6 @@
         indicatore.className = "sync-status offline";
     });
 
-    // Funzione che spinge i dati su Internet
     function salvaDatiSuCloud() {
         dbRef.set({ mesi, entrate, uscite })
             .then(() => {
@@ -322,7 +315,6 @@
                 nome: nomeAlunno.trim().toUpperCase(),
                 importi: new Array(mesi.length).fill(0)
             });
-            // Ordina alfabeticamente per mantenere la lista pulita
             entrate.sort((a, b) => a.nome.localeCompare(b.nome, 'it'));
             salvaDatiSuCloud();
         }
@@ -377,13 +369,32 @@
         }
     }
 
+    // AZZERA TUTTI GLI IMPORTI A 0.00 € E SVUOTA LE SPESE (Mantenendo l'elenco alunni)
+    function azzeraTuttiIDati() {
+        if (confirm("⚠️ ATTENZIONE: Vuoi azzerare TUTTI i versamenti degli alunni a € 0.00 e cancellare tutte le spese registrate?
+
+(I nomi degli alunni e i mesi rimarranno in elenco ma con saldo a zero).")) {
+            if (mesi.length === 0) {
+                mesi = ["Mese 1"];
+            }
+            entrate.forEach(alunno => {
+                alunno.importi = new Array(mesi.length).fill(0);
+            });
+            uscite = [];
+            salvaDatiSuCloud();
+            renderTutto();
+        }
+    }
+
+    // RIPRISTINA I DATI DI DEFAULT PREIMPOSTATI NEL CODICE
     function resetDati() {
-        if (confirm("Attenzione: Vuoi ripristinare il database ai valori iniziali di default? Tutti i cambiamenti non salvati in un backup andranno persi.")) {
+        if (confirm("Vuoi ripristinare il database con i dati preimpostati iniziali (Novembre/Maggio con quote e spese già inserite)?")) {
             const def = getDefaultData();
             mesi = def.mesi;
             entrate = def.entrate;
             uscite = def.uscite;
             salvaDatiSuCloud();
+            renderTutto();
         }
     }
 
@@ -582,7 +593,7 @@
             } catch (err) {
                 alert("Errore durante il caricamento del file di backup: " + err.message);
             } finally {
-                event.target.value = ''; // Reset input file
+                event.target.value = '';
             }
         };
         reader.readAsText(file);
@@ -595,7 +606,6 @@
         }
 
         const { jsPDF } = window.jspdf;
-        // Se ci sono più di 4 mesi, usa il formato orizzontale (landscape) per non tagliare le colonne
         const orientamento = mesi.length > 4 ? 'landscape' : 'portrait';
         const doc = new jsPDF({ orientation: orientamento });
         
